@@ -1,0 +1,23 @@
+<div class="nika-elements-block__wrap">
+    <div class="nika-elements-block__title">Соответствие полей отчета</div>
+    <div class="nika-elements-block">
+        <div class="nika-active-status-element">
+
+            {% for code, title in reportFields %}
+                <div class="nika-mapping-field">
+                    <span>{{ title }}</span>
+
+                    {{ include_control('suggest', {
+                        name: code,
+                        items: amoFieldsFormatted,
+                        class_name: 'nika-suggest',
+                        selected:  mapping[code] ? mapping[code] : 'n-first-select',
+                    }) }}
+                </div>
+
+            {% endfor %}
+
+
+        </div>
+    </div>
+</div>

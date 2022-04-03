@@ -1,0 +1,95 @@
+.nika-elements-block {
+  .empty {
+    backdrop-filter: blur();
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+
+  &__wrap {
+    margin-bottom: 25px;
+
+    /*  .control--suggest--list--item-inner {
+        background: #145af2;
+        color: white;
+      }*/
+
+  }
+}
+
+.nika-task-notify-pipeline {
+  margin-bottom: 20px;
+
+  &__title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  &__status-color {
+    height: 26px;
+    width: 5px;
+    flex-shrink: 0;
+    margin-right: 10px;
+  }
+
+  &__status {
+    display: flex;
+  }
+}
+
+.nika-task-notify-checkbox, .nika-aero-control-checkbox {
+  position: relative;
+
+  &__label {
+    display: flex;
+    align-items: center;
+  }
+
+  &__label-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    display: block;
+    flex-shrink: 0;
+    border: 1px solid #92989B;
+    box-sizing: border-box;
+    position: relative;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      bottom: 4px;
+      border-radius: 6px;
+    }
+  }
+
+  &__label-text {
+    flex: 1;
+    margin-left: 10px;
+    padding: 2px 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: #efc41c;
+    }
+  }
+
+  &__input {
+    position: absolute;
+    top: 0;
+    left: -100px;
+    opacity: 0;
+  }
+
+  &__input:checked + label .nika-task-notify-checkbox__label-box:before {
+    background: #EFD153;
+  }
+}

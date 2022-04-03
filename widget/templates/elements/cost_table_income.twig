@@ -1,0 +1,92 @@
+{#
+https://divtable.com/table-styler/
+#}
+<table class="cost-table {% if params.tableId != 'total' %}section-table{% endif %}" id="table-{{ params.tableId }}" data-table="{{ params.tableId }}">
+    {% if params.header is defined %}
+        <thead>
+        <tr>
+            <th colspan=2 class="section-title">{{ params.header }}</th>
+            <th id="selected-currency-{{ params.tableId }}" class="selected-table-currency">
+                {{ params.currency }}
+            </th>
+        </tr>
+        </thead>
+    {% endif %}
+
+
+    <tbody>
+    {% for row in params.rows %}
+        <tr
+        id="cell-{{ row.field.code }}" class="income-table-row {% if row.field.code == 'added_field' %}nika-added-row{% else %}cf-row" data-field="{{row.field.id }}"{% endif %}">
+            <td class="cell-title">{{ row.title }}</td>
+            <td class="cell-value">
+                {% set class_name_altered = 'form-field field-value cost-field-value field_' ~ row.field.code %}
+                {% set name_prefix = 'step-input#' %}
+                {% if input_preffix is defined %}
+                    {% set name_prefix = 'step-input#' ~ input_preffix ~ '-' %}
+                {% endif %}
+                {% include 'templates/system/cf.twig' with {
+                    params: row.field,
+                    name_prefix:name_prefix,
+                    class_name: class_name_altered,
+                    required: row.required,
+                    prefix: 'field-json'
+                } %}
+            </td>
+            <td class="cost-params">
+                <span class="currency">--</span>
+                <span class="dimension">
+                     {% if row.field.code == 'terminal_handling_arrival' %}
+                         {# {{ row.field.value }} #}
+                     {% else %}
+                         {# {{ row.dimension }} #}
+                     {% endif %}
+                </span>
+                <span class="dimension-selector">
+
+                </span>
+            </td>
+            <td class="cost-delete">
+                {% include 'templates/elements/delete_element.twig' with {
+                    params: row.field
+                } %}
+            </td>
+        </tr>
+
+    {% endfor %}
+    {% if params.tableId != 'total' %}
+        <tr class="add-row">
+            <td></td>
+            <td></td>
+            <td colspan="2">
+                {% include 'templates/elements/add_element.twig' with {
+                    params: params,
+                    title: 'приход',
+                    class: 'nika-income-table-field-add'
+                } %}
+            </td>
+        </tr>
+    {% endif %}
+
+    </tbody>
+    <tfoot>
+    <tr>
+        <td class="table-total-title">{{ params.footer }}</td>
+        <td class="table-total-value">
+
+            <div class="show-amount"></div>
+            {% if total_field is defined %}
+                {% set param = total_field %}
+                {# Отключаем возможность редактирвоания поля #}
+                {# {% set param = param|merge({'disabled': true}) %} #}
+                {% include 'templates/system/cf.twig' with {
+                    params: param,
+                    name_prefix:'step-input#',
+                    class_name: 'form-field field-value total-field-value',
+                } %}
+            {% endif %}
+        </td>
+        <td class="table-total-currency">РУБ</td>
+    </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,32 @@
+{# {% set items = params.statuses %} #}
+{% set items = params.default_statuses %}
+{% set statuses_type = 'default_statuses' %}
+{% set id = params.name %}
+{#{{ dump(params.selected_status) }}#}
+ {% if params.selected_status is defined and params.selected_status is not empty %}
+     {% set statuses_type = 'statuses' %}
+     {% set items = params.statuses %}
+ {% endif %}
+<select id="field-json-#{{ id }}-status" name="field-json-#{{ id }}-status" class="status-selector form-field " data-statuses-type="{{ statuses_type }}">
+    <option data-route-name="{{ id }}"></option>
+    {# <option value="default">&nbsp</option> #}
+    {# {% if params.selected_status is not defined %}
+        {% set items = params.default_statuses %}
+    {% endif %} #}
+    {% for item in items %}
+
+        {% set selected = '' %}
+        {% if params.selected_status is defined %}
+            {% if params.selected_status == item.id %}
+                {% set selected = 'selected' %}
+            {% endif %}
+        {% endif %}
+
+        <option {{ selected }} data-route-name="{{ id }}" data-background="{{ item.background }}" data-value-id="{{ item.id }}"
+                               class="field-value row-field-value"
+                               value="{{ item.id }}">
+            {{ item.value }}
+        </option>
+    {% endfor %}
+
+</select>

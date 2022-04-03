@@ -1,0 +1,62 @@
+<tr id="added-row-{{ field.id }}" class="nika-added-row expense-table-row">
+    <td class="cell-title">
+        {% include 'templates/system/cf.twig' with {
+            params: field,
+            name_prefix: 'step-input-field-json-title#',
+            class_name: 'added-field-title added-field cost-field-title',
+            prefix: 'field-json',
+            placeholder: '...'
+        } %}
+    </td>
+    <td class="cell-value">
+        {% include 'templates/system/cf.twig' with {
+            params: field,
+            name_prefix: 'step-input-field-json#' ~ field.id ~ '#value',
+            class_name: 'added-field-value added-field cost-field-value',
+            prefix: 'field-json',
+            placeholder: '...'
+        } %}
+
+    </td>
+    <td class="row-currency-selector" id="row-currency-selector-{{ field.id }}">
+        {% include 'templates/partials/currency_selector.twig' with {
+            field: field
+        } %}
+    </td>
+    <td class="row-dimension-type-selector" id="row-dimension-type-selector-{{ field.id }}">
+        {% include 'templates/partials/dimension_selector.twig' with {
+            field: field
+        } %}
+    </td>
+{#    <td class="row-payment-date" id="row-payment-date-{{ field.id }}">
+        {% include 'templates/partials/payment_date.twig' with {
+            field: field
+        } %}
+    </td>
+    <td class="row-official-currency-rate" id="row-official-currency-rate-{{ field.id }}">
+        {% include 'templates/partials/currency_rate.twig' with {
+            field: field
+        } %}
+    </td>
+    <td class="row-custom-currency-rate" id="row-custom-currency-rate-{{ field.id }}">
+        {% include 'templates/partials/currency_custom_rate.twig' with {
+            field: field
+        } %}
+    </td>#}
+    <td class="row-contractors" id="row-contractors-{{ field.id }}">
+        {% include 'templates/partials/contractors_selector.twig' with {
+            field: field,
+            items: contractors
+        } %}
+    </td>
+{#    <td class="row-payment-done" id="row-payment-done-{{ field.id }}">
+        {% include 'templates/partials/payment_done.twig' with {
+            field: field
+        } %}
+    </td>#}
+    <td class="cost-delete">
+        {% include 'templates/elements/delete_element.twig' with {
+            params: field
+        } %}
+    </td>
+</tr>

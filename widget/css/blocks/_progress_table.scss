@@ -1,0 +1,83 @@
+#aero-control-progress-table {
+  thead th {
+    width: 100px;
+    border-bottom: solid 1px #ddd;
+    font-weight: bold;
+  }
+
+
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  margin: 5px 0;
+
+
+  thead {
+    padding: 8px 12px;
+    color: #3c5b7b;
+    background: #f7f5f5;
+    font-size: 11px;
+    border-bottom: 1px solid #000000;
+
+    th {
+
+      font-weight: bold;
+      color: #000000;
+      text-align: left;
+      border-left: 1px solid #D0E4F5;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+  }
+
+  tfoot {
+
+    font-weight: bold;
+    color: #000000;
+    border-top: 1px solid #000000;
+  }
+
+  th {
+    border: 1px solid #e3e3e3;
+    text-transform: uppercase;
+    padding: 5px 12px;
+  }
+
+  td {
+    /*   width: auto;*/
+    border: 1px solid #e3e3e3;
+    padding: 2px 12px;
+
+    &:last-child {
+      //width: 10%;
+    }
+
+  }
+
+  .form-field {
+    border: none !important;
+    border-bottom: 1px solid transparent !important;
+
+    &:focus {
+      border-radius: 0;
+      border-bottom: 1px solid #43bdee !important;
+    }
+  }
+
+  .aero-control-progress-status-value {
+    white-space: nowrap;
+  }
+
+  .aero-control-progress-status-color-row {
+    td:last-child {
+      border-color: #b8b9ba !important;
+    }
+
+  }
+
+  .progress-item {
+    height: 14px;
+  }
+}

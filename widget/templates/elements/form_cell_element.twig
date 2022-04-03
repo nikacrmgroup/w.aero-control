@@ -1,0 +1,9 @@
+{% if params is defined %}
+    {# {{ dump(params) }} #}
+    {% set class_name_altered = 'form-field field-value cost-field-value field_' ~ params.code %}
+    {% include 'templates/system/cf.twig' with {
+        params: params,
+        name_prefix:'step-input#',
+        class_name: class_name_altered,
+    } %}
+{% endif %}

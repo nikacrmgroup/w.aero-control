@@ -1,0 +1,21 @@
+{% set selected = 'rub' %}
+{% if field.currency is defined %}
+    {% set selected = field.currency %}
+{% endif %}
+
+{% set currencies = {name: 'currencies',
+    items: [
+        { id: 'rub', option: 'RUB' },
+        { id: 'usd', option: 'USD' },
+        { id: 'eur', option: 'EUR' },
+    ],
+    type: 'select',
+    id: 'field-json-#' ~ field.id,
+    class_name: 'currency-selector',
+    selected: selected
+} %}
+{% include 'templates/system/cf.twig' with {
+    params: currencies,
+    name_prefix:'row-input-',
+    class_name: 'form-field field-value row-field-value',
+} %}

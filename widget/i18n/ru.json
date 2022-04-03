@@ -1,0 +1,14 @@
+{
+  "widget": {
+    "name": "Отчет по доставке",
+    "short_description": "Отчет по доставке",
+    "description": "Отчет по доставке",
+    "tour_description": "Описание виджета"
+  },
+  "settings": {
+    "json": "настройки в строке json"
+  },
+  "text": {
+    "form_1_title": "Данные о доставке"
+  }
+}

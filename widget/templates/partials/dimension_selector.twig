@@ -1,0 +1,19 @@
+{% set selected = 'party' %}
+{% if field.dimension is defined %}
+    {% set selected = field.dimension %}
+{% endif %}
+{% set dimensions = {name: 'dimensions',
+    items: [
+        { id: 'kg' , option: 'кг' },
+        { id: 'party' , option: 'партия' }
+    ],
+    type: 'select',
+    id: 'field-json-#' ~ field.id,
+    class_name: 'dimension-selector',
+    selected: selected
+} %}
+{% include 'templates/system/cf.twig' with {
+    params: dimensions,
+    name_prefix:'row-input-',
+    class_name: 'form-field field-value row-field-value',
+} %}

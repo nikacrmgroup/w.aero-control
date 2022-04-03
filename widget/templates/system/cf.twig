@@ -1,0 +1,83 @@
+{% if params is defined %}
+    {% if params.type in ['text','numeric', 'price','streetaddress', 'url'] %}
+        {% set placeholder = placeholder ? placeholder : 'Введите значение' %}
+        {% if html == 'a' %}
+            {% if params.value is not empty %}
+                <a href="{{ params.value }}" class="nika-link-field" target="_blank">{{ params.value }}</a>
+            {% else %}
+                <div class="nika-link-field nika-link-empty-field">отчет еще не сформирован</div>
+            {% endif %}
+        {% else %}
+            {{ include_control('input', {
+                name: name,
+                id: id,
+                class_name: class_name,
+                placeholder: placeholder,
+                value:  params.value,
+                required: required,
+                disabled: params.disabled
+            }) }}
+        {% endif %}
+    {% endif %}
+    {% if params.type in ['textarea'] %}
+        {% set placeholder = placeholder ? placeholder : 'Введите значение' %}
+        {{ include_control('textarea', {
+            name: name,
+            id: params.id,
+            class_name: class_name,
+            placeholder: placeholder,
+            value:  params.value,
+            required: required,
+            disabled: params.disabled
+        }) }}
+    {% endif %}
+    {% if params.type == 'checkbox' %}
+        {{ include_control('checkbox', {
+            name: name,
+            id: params.id,
+            input_class_name: class_name,
+            checked:  params.value,
+        }) }}
+    {% endif %}
+
+    {% set class_name_calendar = class_name ~ ' nika-calendar' %}
+    {% if params.type in ['date','date_time', 'birthday'] %}
+        {{ include_control('date_field', {
+            type: 'single',
+            name: name,
+            id: id,
+            value:  params.value,
+            class_name: class_name_calendar,
+            placeholder: 'Выберите дату'
+
+        }) }}
+    {% endif %}
+
+    {% if params.type in ['select', 'radiobutton', 'category'] %}
+        {{ include_control('select', {
+            name: name,
+            items: params.items,
+            id: params.id,
+            class_name: class_name,
+            selected:  params.selected,
+        }) }}
+    {% endif %}
+
+    {% if params.type == 'suggest' %}
+        {{ include_control('suggest', {
+            name: name,
+            items: params.items,
+            id: params.id,
+            class_name: class_name,
+            selected:  params.selected,
+        }) }}
+    {% endif %}
+
+    {% if params.type in ['multiselect'] %}
+        {{ include_control('checkboxes_dropdown', {
+            name: name,
+            items: params.items,
+            class_name: class_name,
+        }) }}
+    {% endif %}
+{% endif %}

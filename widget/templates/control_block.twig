@@ -1,0 +1,255 @@
+{# {% include 'templates/system/_dump.twig'  with {
+    context: params,
+    dump_name: 'params'
+} %} #}
+<table id="{{ widget_code }}-progress-table" align="center" cellspacing="0">
+    <tbody class="progress-table-routes-group">
+    <tr class="progress-table-route-title-row">
+        {% for row in params.rows %}
+            {% if row.name not in ['a11'] %}
+                <td class="route-title-value">{{ row.title }}</td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    </tbody>
+    <tbody class="progress-table-status-colors-group">
+    <tr class="progress-table-status-color-row">
+        {% for row in params.rows %}
+            {% if row.name not in ['a11'] %}
+                {% set status_background = params.default_background %}
+                {% if row.selected_status_background is defined %}
+                    {% set status_background = row.selected_status_background %}
+                {% endif %}
+                <td id='{{ row.name }}-progress-color' style='background:{{ status_background }}; border-right: 1px solid {{ status_background }}'>
+                    <div class="progress-item"></div>
+                </td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    </tbody>
+    <tbody class="progress-table-status-values-group">
+    <tr class="progress-table-status-value-row">
+        {% for row in params.rows %}
+            {# {{ dump(row) }} #}
+            {% if row.name not in ['a11'] %}
+                {% set status_text = '' %}
+                {% if row.selected_status_text is defined %}
+                    {% set status_text = row.selected_status_text %}
+                {% endif %}
+                <td
+                        data-route-name="{{ row.name }}"
+                        data-final-status-value="{{ row.final_status_value }}"
+                        data-final-status-id="{{ row.final_status_id }}"
+                        data-selected-status-id="{{ row.selected_status_id }}"
+                        data-selected-status-background="{{ row.selected_status_background }}"
+                        data-selected-status-text="{{ row.selected_status_text }}"
+                        id="{{ row.name }}-progress-text">
+                    {{ status_text }}
+                </td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    </tbody>
+    {# Выводим рейсы #}
+    <tbody class="progress-table-flights-group">
+    <tr class="progress-table-flight-row">
+        {% for row in params.rows %}
+            {% if row.name not in ['a11'] %}
+                <td
+                        data-route-name="{{ row.name }}"
+                        id="{{ row.name }}-progress-flight"></td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    </tbody>
+    {# Выводим даты #}
+    <tbody class="progress-table-dates-group">
+    <tr class="progress-table-date-row">
+        {% for row in params.rows %}
+            {% if row.name not in ['a11'] %}
+                <td
+                        data-route-name="{{ row.name }}"
+                        id="{{ row.name }}-progress-date"></td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    </tbody>
+
+</table>
+<table id="{{ widget_code }}-control-table">
+    <thead>
+    <tr>
+        <th class="table-header-title  ">маршрут</th>
+        <th class="table-header-value">{{ params.routesHeader }}</th>
+    </tr>
+    </thead>
+    <tr class="empty-row">
+        <td colspan="2">
+            <div></div>
+        </td>
+    </tr>
+    <tbody class="segment-group" id="segment-group-MAWB">
+    <tr class="segment-group-row">
+        {% set param = params.amoFields.MAWB %}
+        {% set filledClass = '' %}
+        <td class="segment-group-row-title">MAWB</td>
+        <td class="segment-group-row-value" data-init-value="{{ param['value'] }}">
+
+            {% include 'templates/system/cf.twig' with {
+                name: 'MAWB#'~param.id,
+                id:  'MAWB#'~param.id,
+                class_name: 'MAWB route-declaration',
+                placeholder: placeholder,
+                params: param,
+            } %}
+        </td>
+    </tr>
+    <tr class="segment-group-row" id="segment-group-HAWB">
+        <td class="segment-group-row-title">HAWB</td>
+        {% set param = params.amoFields.HAWB %}
+        <td class="segment-group-row-value" data-init-value="{{ param['value'] }}">
+
+            {% include 'templates/system/cf.twig' with {
+                name: 'HAWB#'~param.id,
+                id:  'HAWB#'~param.id,
+                class_name: 'HAWB route-declaration',
+                placeholder: placeholder,
+                params: param,
+            } %}
+        </td>
+    </tr>
+    </tbody>
+    <tr class="empty-row">
+        <td colspan="2">
+            <div></div>
+        </td>
+    </tr>
+    {% for row in params.rows %}
+        <tbody class="segment-group segment-group-{{ row.name }}" id="segment-group-{{ row.name }}" data-segment-name="{{ row.name }}">
+        <tr class="segment-group-header">
+            <td class="segment-group-header-description">{{ row.description }}</td>
+            <td class="segment-group-header-value">{{ row.title }}</td>
+        </tr>
+        {# Проверяем, не первый ли и последний ли сегмент, т.е. не а1 или б2 - у них нет рейса и даты #}
+        {% if row.name not in ['a1', 'a11', 'b2'] %}
+            <tr class="segment-group-row segment-flight-number">
+                {% set flight_number_value = '' %}
+                {% set flight_number_index = row.name ~ '_' ~ 'flight_number' %}
+                {% set param = params.amoFields[flight_number_index] %}
+                {% if param is defined %}
+                    {% set flight_number_value = param['value'] %}
+                {% endif %}
+
+                {# {{ set params.amoFields[flight_number_index].disabled = false }} #}
+                <td class="segment-group-row-title">рейс</td>
+                <td class="segment-group-row-value" data-init-value="{{ flight_number_value }}">
+                    <div>
+
+                        {# {{ include_control('input', {
+                            name: 'field-json#' ~row.name~'-flight-number',
+                            id:  'field-json#' ~row.name~'-flight-number',
+                            class_name: 'flight-number',
+                            placeholder: placeholder,
+                            value: flight_number_value,
+                            disabled: false
+                        }) }} #}
+
+                        {# {% set param = param|merge({'disabled': true}) %} #}
+
+                        {% include 'templates/system/cf.twig' with {
+                            name: row.name~'_flight_number#'~param.id,
+                            id:  row.name~'_flight_number#'~param.id,
+                            class_name: 'flight-number',
+                            placeholder: placeholder,
+                            params: param,
+                        } %}
+
+                    </div>
+                    <div class="row-cause-selector" id="row-cause-selector-flight-number-{{ row.name }}">
+                        {% include 'templates/partials/cause_selector.twig' with {
+                            params: row,
+                            type: 'flight-number',
+                            causes: params.causes,
+                            selected_cause: row.flight_number_cause,
+                            custom_cause: row.flight_number_custom_cause
+                        } %}
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+
+        {% if row.name not in ['b2'] %}
+            <tr class="segment-group-row segment-flight-date">
+                {% set flight_date_value = '' %}
+                {# {% if row.flight_date is defined %}
+                    {% set flight_date_value = row.flight_date %}
+                {% endif %} #}
+                {% set flight_date_index = row.name ~ '_' ~ 'flight_date' %}
+                {% set param = params.amoFields[flight_date_index] %}
+                {% if param is defined %}
+                    {% set flight_date_value = param['value'] %}
+                {% endif %}
+                {% set row_title = 'дата' %}
+                {% if row.name == 'a1' %}
+                    {% set row_title = 'дата подачи машины' %}
+                {% endif %}
+                {% if row.name == 'a11' %}
+                    {% set row_title = 'дата' %}
+                {% endif %}
+                <td class="segment-group-row-title">{{ row_title }}</td>
+                <td class="segment-group-row-value" data-init-value="{{ flight_date_value }}">
+                    <div>
+                        {# {% include 'templates/system/cf.twig' with {
+                            name: row.name~'-flight-date',
+                            id:  row.name~'-flight-date',
+                            class_name: 'flight-date',
+                            placeholder: '...',
+                            params: param,
+                        } %} #}
+                        {% include 'templates/system/cf.twig' with {
+                            name: row.name~'_flight_date#'~param.id,
+                            id:  row.name~'_flight_date#'~param.id,
+                            class_name: 'flight-date',
+                            placeholder: placeholder,
+                            params: param,
+                        } %}
+
+                        {# {{ include_control('date_field', {
+                            type: 'single',
+                            name:  'field-json#' ~row.name~'-flight-date',
+                            id:  'field-json#' ~row.name~'-flight-date',
+                            value:  flight_date_value,
+                            class_name: 'flight-date',
+                            placeholder: '...',
+                            disabled: false
+                        }) }} #}
+                    </div>
+                    <div class="segment-group-row-value row-cause-selector" id="row-cause-selector-flight-date-{{ row.name }}">
+                        {% include 'templates/partials/cause_selector.twig' with {
+                            params: row,
+                            type: 'flight-date',
+                            causes: params.causes,
+                            selected_cause: row.flight_date_cause,
+                            custom_cause: row.flight_date_custom_cause
+                        } %}
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+        <tr class="segment-group-row segment-status">
+            <td class="segment-group-row-title">статус</td>
+            <td class="segment-group-row-value row-status-selector" id="row-status-selector-{{ row.name }}" colspan="2">
+                {% include 'templates/partials/status_selector.twig' with {
+                    params: row
+                } %}
+            </td>
+        </tr>
+
+        <tr class="empty-row">
+            <td colspan="2">
+                <div></div>
+            </td>
+        </tr>
+        </tbody>
+    {% endfor %}
+</table>

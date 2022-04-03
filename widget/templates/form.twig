@@ -1,0 +1,52 @@
+<div id="nika_{{ widget_code }}_modal" class="nika-{{ widget_code }}-modal">
+    <div class="nika-{{ widget_code }}-modal__content-wrap">
+        <div class="nika-{{ widget_code }}-modal__content">
+            <div class="nika-form-content">
+                <form id="nika-{{ widget_code }}-base-form" action="">
+                    <div class="form-step__wrapper" id="step-form-wrapper-common">
+                        {# {{ dump(common_block_params) }} #}
+                        {% include 'templates/common_block.twig' with {
+                            params: common_block_params
+                        } %}
+                    </div>
+                    <div class="form-step__wrapper" id="step-form-wrapper-control">
+                        {% include 'templates/control_block.twig' with {
+                            params: control_block_params,
+                            widget_code
+                        } %}
+                    </div>
+                    <div class="{{ widget_code }}-actions-wrapper">
+                        {# <div class="nika-widget-action-button">
+                        {% set button_id = widget_code ~ '_save-button' %}
+                        {{ include_control('button', {
+                            text: 'Сохранить',
+                            id: button_id,
+                            blue: true
+                        }) }}
+                    </div> #}
+                        <div class="nika-widget-action-button">
+                            {% set button_id = widget_code ~ '_generate-button' %}
+                            {{ include_control('button', {
+                                text: btn_text,
+                                id: button_id,
+                                blue: false,
+                                disabled: true
+                            }) }}
+                        </div>
+                    </div>
+
+                </form>
+
+                <div class="nika-widget-version" style="font-size: 10px; color:#4c4c4c">{{ common_block_params.version }}</div>
+
+
+            </div>
+        </div>
+
+        {% if closeOption %}
+            <div id="nika_{{ widget_code }}_modal_close" title="Закрыть" class="nika-{{ widget_code }}-modal__close">×</div>
+        {% endif %}
+
+
+    </div>
+</div>

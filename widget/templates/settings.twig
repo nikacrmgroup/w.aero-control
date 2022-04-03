@@ -1,0 +1,31 @@
+{{ include_control('button', {
+    text: button_text
+}) }}
+
+{{ include_control('checkbox', {
+    name: 'checkbox',
+    text: 'Хотите подписаться на нашу рассылку?',
+    text_class_name: 'checkbox-text-classname'
+}) }}
+
+{{ include_control('checkboxes_dropdown', {
+    items: [
+        { id: 1, option: 'Москва' },
+        { id: 2, option: 'Санкт-Петергбург' },
+        { id: 3, option: 'Сан-Франциско' }
+    ]
+}) }}
+
+{{ include_control('date_field', {
+    name: 'date',
+    placeholder: 'Выберите дату'
+}) }}
+
+{{ include_control('suggest', {
+    name: 'city',
+    items: [
+        { id: 1, value: 'Москва' },
+        { id: 2, value: 'Санкт-Петербург' },
+    ],
+    class_name: 'my-custom-suggest'
+}) }}

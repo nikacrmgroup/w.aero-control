@@ -1,0 +1,30 @@
+{
+  "widget": {
+    "name": "widget.name",
+    "description": "widget.description",
+    "short_description": "widget.short_description",
+    "version": "aero-control.1.1",
+    "interface_version": 2,
+    "init_once": false,
+    "locale": [
+      "ru"
+    ],
+    "installation": true,
+    "support": {
+      "link": "https://test.com",
+      "email": "support@test.com"
+    }
+  },
+  "locations": [
+    "everywhere",
+    "lcard-1",
+    "settings"
+  ],
+  "settings": {
+    "storage": {
+      "name": "settings.json",
+      "type": "custom",
+      "required": false
+    }
+  }
+}

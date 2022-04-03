@@ -1,0 +1,7 @@
+/.idea
+widget/css/style.css.map
+widget/css/style.min.css
+widget/css/style.css
+widget/widget.zip
+widget/js/common/templater.js
+widget/src/common/templater.ts

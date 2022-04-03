@@ -1,0 +1,42 @@
+<div class="terminal-handling-wrapper">
+
+    {% for dimension in params %}
+        {# Добавляем 'field-json' чтобы поле не писалось в поле амо, а отдельно в json хранилище #}
+        {% set name = 'step-input#field-json-'~ dimension.id %}
+        {% set id = name %}
+        {% if 'for_kg' in dimension.code %}
+            {% set handling_type = 'for_kg' %}
+            {% set class_name_altered = 'form-field field-value terminal-handling cost-field-value field_'~type~'_handling_kg' %}
+        {% elseif dimension.hidden %}
+            {% set handling_type = '' %}
+            {% set class_name_altered = 'form-field field-value terminal-handling cost-field-value field_'~type~'_handling_hidden' %}
+        {% else %}
+            {% set handling_type = 'for_volume' %}
+            {% set class_name_altered = 'form-field field-value terminal-handling cost-field-value field_'~type~'_handling_party' %}
+        {% endif %}
+        <div class="terminal-handling-input-div  {% if dimension.hidden %}terminal-handling-input-div-hidden{% endif %}"
+             data-handling-type="{{ handling_type }}">
+            {{ include_control('input', {
+                name: name,
+                id: id,
+                class_name: class_name_altered,
+                placeholder: '...',
+                value: dimension.value
+            }) }}
+            {% if 'for_kg' in dimension.code %}
+                <div class="terminal-handling-container">
+                    <span class="terminal-handling-currency">USD</span>
+                    <span class="terminal-handling-dimension">/кг</span>
+                </div>
+            {% elseif dimension.hidden %}
+
+            {% else %}
+                <div class="terminal-handling-container">
+                    <span class="terminal-handling-currency">RUB</span>
+                    <span class="terminal-handling-dimension">/партия</span>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+

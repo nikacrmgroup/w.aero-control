@@ -1,0 +1,32 @@
+<tr id="added-row-{{ field.id }}" class="nika-added-row income-table-row">
+    <td class="cell-title added-row-title">
+        {% include 'templates/system/cf.twig' with {
+            params: field,
+            name_prefix: 'step-input-field-json-title#',
+            class_name: 'form-field field-value cost-field-title text-input added-field-title',
+            prefix: 'field-json',
+            placeholder: 'Введите значение'
+        } %}
+    </td>
+    <td class="cell-value added-row-value">
+        {% include 'templates/system/cf.twig' with {
+            params: field,
+            name_prefix: 'step-input-field-json#' ~ field.id ~ '#value',
+            class_name: 'added-field-value added-field cost-field-value',
+            prefix: 'field-json',
+            placeholder: 'Введите значение'
+        } %}
+
+    </td>
+    <td class="cost-params added-row-params">
+        <span class="currency" data-selected-param="{{ field.tableCurrency }}">{{ field.tableCurrency }}</span>
+        <span class="dimension">                                     </span>
+        <span class="dimension-selector">
+                </span>
+    </td>
+    <td class="cost-delete">
+        {% include 'templates/elements/delete_element.twig' with {
+            params: field
+        } %}
+    </td>
+</tr>

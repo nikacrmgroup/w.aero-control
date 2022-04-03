@@ -1,0 +1,207 @@
+
+<table class="cost-table {% if params.tableId != 'total' %}section-table{% endif %}" id="table-{{ params.tableId }}" data-table="{{ params.tableId }}">
+    {% if params.header is defined %}
+        <thead>
+        <tr>
+            <th colspan=2 class="section-title">{{ params.header }}</th>
+            {# <th id="currency-selector-{{ params.tableId }}">
+                {% if params.currency is defined %}
+                    {% include 'templates/system/cf.twig' with {
+                        params: common[params.currency],
+                        name_prefix:'step-input#',
+                        class_name: 'form-field field-value cost-field-value',
+                    } %}
+                {% endif %}
+            </th> #}
+            <th>Валюта</th>
+            <th>Кг/Партия</th>
+            {# <th>Дата оплаты</th>
+            <th>Курс ЦБРФ</th>
+            <th>Курс свой</th> #}
+            <th>Контрагент</th>
+            {% if params.currency is defined %}
+                <th id="selected-currency-{{ params.tableId }}">
+                  {#   КП валюта - {{ params.currency }}#}
+                </th>
+            {% endif %}
+
+            {# <th>Оплачено</th> #}
+        </tr>
+        </thead>
+    {% endif %}
+    <tfoot>
+    <tr>
+        <td class="table-total-title">{{ params.footer }}</td>
+        <td class="table-total-value">
+            {# total_field {{ dump(total_field) }} #}
+            <div class="show-amount"></div>
+            {% if total_field is defined %}
+                {% set param = total_field %}
+                {% set param = param|merge({'disabled': true}) %}
+                {% include 'templates/system/cf.twig' with {
+                    params: param,
+                    name_prefix:'step-input#',
+                    class_name: 'form-field field-value total-field-value',
+                } %}
+            {% endif %}
+        </td>
+        <td class="table-total-currency">РУБ</td>
+    </tr>
+    {% if params.tableId == 'total' %}
+        {# <tr>
+            <td class="table-total-title">Всего оплачено</td>
+            <td class="table-total-value">
+        #}{# total_field {{ dump(total_field) }} #}{#
+    <div class="show-amount"></div>
+    {% if total_paid_field is defined %}
+        {% set param = total_paid_field %}
+        {% set param = param|merge({'disabled': true}) %}
+        {% include 'templates/system/cf.twig' with {
+            params: param,
+            name_prefix:'step-input#',
+            class_name: 'form-field field-value total-field-value',
+        } %}
+    {% endif %}
+</td>
+<td class="table-total-currency">РУБ</td>
+
+</tr> #}
+        <tr>
+            <td class="table-total-sale-title">ВСЕГО ПРИБЫЛЬ</td>
+            <td class="table-total-sale-value">
+                {# total_field {{ dump(total_field) }} #}
+                <div class="show-amount"></div>
+                {% if total_sale_field is defined %}
+                    {% set param = total_sale_field %}
+                    {% set param = param|merge({'disabled': true}) %}
+                    {% include 'templates/system/cf.twig' with {
+                        params: param,
+                        name_prefix:'step-input#',
+                        class_name: 'form-field field-value total-field-value',
+                    } %}
+                {% endif %}
+            </td>
+            <td class="table-total-sale-currency">РУБ</td>
+
+        </tr>
+    {% endif %}
+
+    </tfoot>
+    <tbody>
+    {% for row in params.rows %}
+        {% if row.field.code in ['terminal_handling_arrival_for_kg','terminal_handling_arrival_for_volume','terminal_handling_departure_for_kg',
+            'terminal_handling_departure_for_volume'] %}
+        {% else %}
+            <tr
+            id="cell-{{ row.field.code }}" class="expense-table-row {% if row.field.code == 'added_field' %}nika-added-row{% else %}cf-row"
+            data-field="{{row.field.id }}"
+        {% endif %}"
+            >
+            <td class="cell-title">{{ row.title }}</td>
+            <td class="cell-value">
+                {% if row.field.code == 'terminal_handling_arrival' %}
+                    {% include 'templates/elements/terminal_handling.twig' with {
+                        params: terminal_handling_arrival,
+                        type: 'arrival'
+                    } %}
+                {% elseif row.field.code == 'terminal_handling_departure' %}
+                    {% include 'templates/elements/terminal_handling.twig' with {
+                        params: terminal_handling_departure,
+                        type: 'departure'
+                    } %}
+
+                {% else %}
+
+                    {% set class_name_altered = 'form-field field-value cost-field-value field_' ~ row.field.code %}
+                    {% set name_prefix = 'step-input#' %}
+                    {% if input_preffix is defined %}
+                        {% set name_prefix = 'step-input#' ~ input_preffix ~ '-' %}
+                    {% endif %}
+                    {% include 'templates/system/cf.twig' with {
+                        params: row.field,
+                        name_prefix: name_prefix,
+                        class_name: class_name_altered,
+                        required: row.required,
+                        prefix: 'field-json'
+                    } %}
+
+
+                {% endif %}
+
+            </td>
+
+            <td class="row-currency-selector" id="row-currency-selector-{{ row.field.id }}">
+                {% set currency = 'rub' %}
+                {% if row.field.currency is defined %}
+                    {% set currency = row.field.currency %}
+                {% endif %}
+                {% include 'templates/partials/currency_selector.twig' with {
+                    field: row.field,
+                    currency: currency
+                } %}
+            </td>
+            {% if row.field.code in ['terminal_handling_arrival','terminal_handling_departure'] %}
+                <td class="row-dimension-type-selector" id="row-dimension-type-selector-{{ row.field.id }}">
+
+                </td>
+            {% else %}
+                <td class="row-dimension-type-selector" id="row-dimension-type-selector-{{ row.field.id }}">
+                    {% include 'templates/partials/dimension_selector.twig' with {
+                        field: row.field
+                    } %}
+                </td>
+            {% endif %}
+            {# <td class="row-payment-date" id="row-payment-date-{{ row.field.id }}">
+            {% include 'templates/partials/payment_date.twig' with {
+                field: row.field
+            } %}
+        </td>
+        <td class="row-official-currency-rate" id="row-official-currency-rate-{{ row.field.id }}">
+            {% include 'templates/partials/currency_rate.twig' with {
+                field: row.field
+            } %}
+        </td>
+        <td class="row-custom-currency-rate" id="row-custom-currency-rate-{{ row.field.id }}">
+            {% include 'templates/partials/currency_custom_rate.twig' with {
+                field: row.field
+            } %}
+        </td> #}
+            {# {{ dump(params.contractors) }} #}
+            <td class="row-contractors" id="row-contractors-{{ row.field.id }}-{{ loop.index }}">
+                {% include 'templates/partials/contractors_selector.twig' with {
+                    field: row.field,
+                    items: contractors,
+                    uniqueId: params.tableId ~ '-' ~ loop.index
+                } %}
+            </td>
+
+            {# <td class="row-payment-done" id="row-payment-done-{{ row.field.id }}">
+            {% include 'templates/partials/payment_done.twig' with {
+                field: row.field
+            } %}
+        </td> #}
+            <td class="cost-delete">
+                {% include 'templates/elements/delete_element.twig' with {
+                    params: row.field
+                } %}
+            </td>
+            </tr>
+
+        {% endif %}
+
+    {% endfor %}
+    {% if params.tableId != 'total' %}
+        <tr class="add-row">
+            <td></td>
+            <td></td>
+            <td colspan="4">
+                {% include 'templates/elements/add_element.twig' with {
+                    params: params,
+                    title: 'расход',
+                    class: 'nika-expense-table-field-add'
+                } %}
+            </td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

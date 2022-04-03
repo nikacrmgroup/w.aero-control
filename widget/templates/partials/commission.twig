@@ -1,0 +1,18 @@
+<table class="commission-table">
+    <tr>
+        {# {{ dump(commission) }} #}
+        <td>Комиссия (выбор валюты) (РУБ/USD/EUR) (выбор "За партию" или "За кг")</td>
+        <td id="commission-value"> {% include 'templates/elements/form_cell_element.twig' with {
+                params: params.commission['commission']
+            } %}
+        </td>
+        <td id="currency-selector-arrival">{% include 'templates/elements/form_cell_element.twig' with {
+                params: params.commission['commission_currency']
+            } %}
+        </td>
+        <td id="commission-dimension">{% include 'templates/elements/form_cell_element.twig' with {
+                params: params.commission['commission_type']
+            } %}
+        </td>
+    </tr>
+</table>

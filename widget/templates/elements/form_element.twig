@@ -1,0 +1,17 @@
+{% if params is defined %}
+    <div class="form-group step-element" id="el-{{ params.id }}">
+        <span class="field-name">{{ params.name }}</span>
+        {% set class_name_altered = 'form-field field-value amo-field-value field_' ~ params.code %}
+        {% set html = '' %}
+        {% if wrapper is defined %}
+            {% set html = wrapper %}
+        {% endif %}
+        {% include 'templates/system/cf.twig' with {
+            params: params,
+            name_prefix:'step-input#',
+            class_name: class_name_altered,
+            required: required,
+            html: html
+        } %}
+    </div>
+{% endif %}

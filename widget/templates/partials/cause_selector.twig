@@ -1,0 +1,40 @@
+{% set items = causes %}
+{% set id = params.name %}
+
+<div style="display: none" class="cause-selector-wrapper">
+    <select required id="field-json-#{{ id }}-{{ type }}-cause" name="field-json-#{{ id }}-{{ type }}-cause" class="cause-selector form-field ">
+        <option></option>
+        {# <option value="default">&nbsp</option> #}
+        {% for item in items %}
+
+            {% set selected = '' %}
+            {# {% if selected_cause is defined %}
+                {% if selected_cause == item.id %}
+                    {% set selected = 'selected' %}
+                {% endif %}
+            {% endif %} #}
+            {% set html = '' %}
+            {% if item.html is defined %}
+                {% set html = item.html %}
+            {% endif %}
+            <option {{ selected }} data-value-id="{{ item.id }}" data-html="{{ html }}"
+                                   class="field-value row-field-value"
+                                   value="{{ item.id }}">
+                {{ item.value }}
+            </option>
+        {% endfor %}
+        {# <option {{ selected }} data-value-id="{{ item.id }}" class="field-value row-field-value"
+                               value="custom" data-route-name="{{ id }}">Собственная причина
+        </option> #}
+
+    </select>
+    <div style="display: none" class="custom-cause-input">
+        {{ include_control('input', {
+            name: 'field-json-#'~ id ~'-'~type~'-custom-cause',
+            id: 'field-json-#'~ id ~'-'~type~'-custom-cause',
+            class_name: 'custom-cause',
+            placeholder: '...',
+            value: custom_cause,
+        }) }}
+    </div>
+</div>
